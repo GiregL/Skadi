@@ -1,5 +1,11 @@
-msgid "username"
+msgid "Username"
 msgstr "Nom d'utilisateur"
 
-msgid "email"
+msgid "Email"
 msgstr "Adresse E-mail"
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Saving"
+msgstr "Sauvegarde ..."

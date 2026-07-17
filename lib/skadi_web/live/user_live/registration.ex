@@ -26,7 +26,7 @@ defmodule SkadiWeb.UserLive.Registration do
           <.input
             field={@form[:email]}
             type="email"
-            label={gettext("email")}
+            label={gettext("Email")}
             autocomplete="e-mail"
             spellcheck="false"
             required
@@ -36,7 +36,7 @@ defmodule SkadiWeb.UserLive.Registration do
           <.input
             field={@form[:username]}
             type="text"
-            label={gettext("username")}
+            label={gettext("Username")}
             required
           />
 

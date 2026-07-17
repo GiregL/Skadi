@@ -46,7 +46,7 @@ defmodule SkadiWeb.Layouts do
 
           <ul class="menu w-full">
             <li>
-              <.link class="flex items-center gap-3">
+              <.link href={~p"/"} class="flex items-center gap-3">
                   <.icon name="hero-home" class="w-5 h-5"/>
                   Accueil
               </.link>

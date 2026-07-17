@@ -11,21 +11,34 @@ defmodule SkadiWeb.UserLive.Settings do
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <div class="text-center">
         <.header>
-          Account Settings
-          <:subtitle>Manage your account email address and password settings</:subtitle>
+          Paramètres utilisateur
+          <:subtitle>Gerez votre compte utilisateur</:subtitle>
         </.header>
       </div>
+
+      <.form for={@profile_form} id="profile_form" phx-submit="update_profile" phx-change="validate_profile">
+        <.input
+          field={@profile_form[:username]}
+          type="text"
+          label={gettext("Username")}
+          required
+        />
+
+        <.button variant="primary" phx-disable-with={gettext("Saving")}>{gettext("Save")}</.button>
+      </.form>
+
+      <div class="divider"></div>
 
       <.form for={@email_form} id="email_form" phx-submit="update_email" phx-change="validate_email">
         <.input
           field={@email_form[:email]}
           type="email"
-          label="Email"
-          autocomplete="username"
+          label={gettext("Email")}
           spellcheck="false"
           required
         />
-        <.button variant="primary" phx-disable-with="Changing...">Change Email</.button>
+
+        <.button variant="primary" phx-disable-with={gettext("Saving")}>{gettext("Save")}</.button>
       </.form>
 
       <div class="divider" />
@@ -87,16 +100,22 @@ defmodule SkadiWeb.UserLive.Settings do
     user = socket.assigns.current_scope.user
     email_changeset = Accounts.change_user_email(user, %{}, validate_unique: false)
     password_changeset = Accounts.change_user_password(user, %{}, hash_password: false)
+    profile_changeset = Accounts.change_user_password(user, %{})
 
     socket =
       socket
       |> assign(:current_email, user.email)
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
+      |> assign(:profile_form, to_form(profile_changeset))
       |> assign(:trigger_submit, false)
 
     {:ok, socket}
   end
+
+  #
+  # Email validation and update event handlers.
+  #
 
   @impl true
   def handle_event("validate_email", params, socket) do
@@ -132,6 +151,10 @@ defmodule SkadiWeb.UserLive.Settings do
     end
   end
 
+  #
+  # Password validation and update event handlers.
+  #
+
   def handle_event("validate_password", params, socket) do
     %{"user" => user_params} = params
 
@@ -155,6 +178,42 @@ defmodule SkadiWeb.UserLive.Settings do
 
       changeset ->
         {:noreply, assign(socket, password_form: to_form(changeset, action: :insert))}
+    end
+  end
+
+  #
+  # User profile validation and update event handlers.
+  #
+
+  def handle_event("validate_profile", params, socket) do
+    %{"user" => profile_params} = params
+    current_user = socket.assigns.current_scope.user
+
+    profile_form =
+      current_user
+      |> Accounts.change_user_profile(profile_params)
+      |> Map.put(:action, :validate)
+      |> to_form()
+
+    {:noreply, assign(socket, profile_form: profile_form)}
+  end
+
+  def handle_event("update_profile", params, socket) do
+    %{"user" => profile_params} = params
+    current_user = socket.assigns.current_scope.user
+
+    case Accounts.update_user_profile(current_user, profile_params) do
+      {:ok, _} ->
+        socket =
+          socket
+          |> put_flash(:info, "Profil utilisateur enregistré.")
+        {:noreply, socket}
+      {:error, changeset} ->
+        socket =
+          socket
+          |> put_flash(:error, "Echec de l'enregistrement.")
+          |> assign(:profile_form, to_form(changeset))
+        {:noreply, socket}
     end
   end
 end

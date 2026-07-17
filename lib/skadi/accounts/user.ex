@@ -59,6 +59,17 @@ defmodule Skadi.Accounts.User do
   end
 
   @doc """
+  A user changeset for changing profile informations such as username, profile picture, ...
+  This changeset does not apply to email logic.
+  """
+  def profile_options_changeset(user, attrs, _opts \\ []) do
+    user
+    |> cast(attrs, [:username])
+    |> validate_required(:username)
+    |> validate_length(:username, min: 3, max: 50)
+  end
+
+  @doc """
   A user changeset for changing the password.
 
   It is important to validate the length of the password, as long passwords may

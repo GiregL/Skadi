@@ -97,6 +97,20 @@ defmodule Skadi.Accounts do
   def sudo_mode?(_user, _minutes), do: false
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for changing the user profile.
+
+  See `Skadi.Accounts.User.profile_options_changeset/3` for a list of supported options.
+
+  ## Examples
+
+      iex> change_user_profile(user)
+      %Ecto.Changeset{data: %User{}}
+  """
+  def change_user_profile(user, attrs \\ %{}, opts \\ []) do
+    User.profile_options_changeset(user, attrs, opts)
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for changing the user email.
 
   See `Skadi.Accounts.User.email_changeset/3` for a list of supported options.
@@ -293,5 +307,16 @@ defmodule Skadi.Accounts do
         {:ok, {user, tokens_to_expire}}
       end
     end)
+  end
+
+  @doc """
+  Updates a user profile.
+
+  Returns a tagged tuple {:ok, schema} | {:error, changeset}
+  """
+  def update_user_profile(user, attrs) do
+    user
+    |> change_user_profile(attrs)
+    |> Repo.update()
   end
 end
