@@ -16,6 +16,17 @@ defmodule SkadiWeb.UserLive.Settings do
         </.header>
       </div>
 
+      <div class="w-fit mb-2">
+        <h3 class="text-lg mb-2">Thème de l'application</h3>
+        <Layouts.theme_toggle/>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3 class="text-lg mb-2">
+        Profil utilisateur
+      </h3>
+
       <.form for={@profile_form} id="profile_form" phx-submit="update_profile" phx-change="validate_profile">
         <.input
           field={@profile_form[:username]}
