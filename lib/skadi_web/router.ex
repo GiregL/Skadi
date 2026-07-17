@@ -72,4 +72,17 @@ defmodule SkadiWeb.Router do
     post "/users/log-in", UserSessionController, :create
     delete "/users/log-out", UserSessionController, :delete
   end
+
+  scope "/finances", SkadiWeb do
+    pipe_through [:browser]
+
+    live_session :finances_user,
+      on_mount: [{SkadiWeb.UserAuth, :mount_current_scope}] do
+
+      live "/movements", MovementLive.Index, :index
+      live "/movements/new", MovementLive.Form, :new
+      live "/movements/:id", MovementLive.Show, :show
+      live "/movements/:id/edit", MovementLive.Form, :edit
+    end
+  end
 end
