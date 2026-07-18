@@ -8,14 +8,14 @@ defmodule SkadiWeb.MovementLive.Show do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.header>
-        Movement {@movement.id}
+        Mouvement # {@movement.id}
         <:subtitle>This is a movement record from your database.</:subtitle>
         <:actions>
           <.button navigate={~p"/finances/movements"}>
             <.icon name="hero-arrow-left" />
           </.button>
           <.button variant="primary" navigate={~p"/finances/movements/#{@movement}/edit?return_to=show"}>
-            <.icon name="hero-pencil-square" /> Edit movement
+            <.icon name="hero-pencil-square" /> Modifier le mouvement
           </.button>
         </:actions>
       </.header>
@@ -24,6 +24,7 @@ defmodule SkadiWeb.MovementLive.Show do
         <:item title="Direction">{@movement.direction}</:item>
         <:item title="Source">{@movement.source}</:item>
         <:item title="Destination">{@movement.destination}</:item>
+        <:item title="Montant"><.currency_amount value={@movement.amount}/></:item>
         <:item title="Notes">{@movement.notes}</:item>
         <:item title="Date">{@movement.date}</:item>
       </.list>

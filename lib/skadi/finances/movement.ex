@@ -8,6 +8,7 @@ defmodule Skadi.Finances.Movement do
     field :destination, :string
     field :notes, :string
     field :date, :date
+    field :amount, :decimal
     field :user_id, :id
 
     timestamps(type: :utc_datetime)
@@ -16,8 +17,9 @@ defmodule Skadi.Finances.Movement do
   @doc false
   def changeset(movement, attrs, user_scope) do
     movement
-    |> cast(attrs, [:direction, :source, :destination, :notes, :date])
-    |> validate_required([:direction, :source, :destination, :notes, :date])
+    |> cast(attrs, [:direction, :source, :destination, :notes, :date, :amount])
+    |> validate_required([:direction, :source, :destination, :notes, :date, :amount])
+    |> validate_number(:amount, greater_than_or_equal_to: 0)
     |> put_change(:user_id, user_scope.user.id)
   end
 end

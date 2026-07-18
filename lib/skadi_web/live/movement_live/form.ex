@@ -23,6 +23,7 @@ defmodule SkadiWeb.MovementLive.Form do
         />
         <.input field={@form[:source]} type="text" label="Source" />
         <.input field={@form[:destination]} type="text" label="Destination" />
+        <.input field={@form[:amount]} type="number" label="Montant" min="0" step="0.01"/>
         <.input field={@form[:notes]} type="textarea" label="Notes" />
         <.input field={@form[:date]} type="date" label="Date" />
         <footer>

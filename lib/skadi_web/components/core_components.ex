@@ -502,4 +502,17 @@ defmodule SkadiWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
+
+  @doc """
+  Shows a given Decimal amount as a currency.
+  """
+  attr :value, Decimal
+  attr :currency, :string, default: "EUR"
+  attr :locale, :string, default: "fr"
+
+  def currency_amount(assigns) do
+    ~H"""
+    {Skadi.Cldr.Number.to_string!(@value, format: :currency, currency: @currency, locale: @locale)}
+    """
+  end
 end

@@ -8,10 +8,10 @@ defmodule SkadiWeb.MovementLive.Index do
     ~H"""
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.header>
-        Listing Movements
+        Liste des mouvements
         <:actions>
           <.button variant="primary" navigate={~p"/finances/movements/new"}>
-            <.icon name="hero-plus" /> New Movement
+            <.icon name="hero-plus" /> Nouveau mouvement
           </.button>
         </:actions>
       </.header>
@@ -24,13 +24,13 @@ defmodule SkadiWeb.MovementLive.Index do
         <:col :let={{_id, movement}} label="Direction">{movement.direction}</:col>
         <:col :let={{_id, movement}} label="Source">{movement.source}</:col>
         <:col :let={{_id, movement}} label="Destination">{movement.destination}</:col>
-        <:col :let={{_id, movement}} label="Notes">{movement.notes}</:col>
+        <:col :let={{_id, movement}} label="Montant"><.currency_amount value={movement.amount}/></:col>
         <:col :let={{_id, movement}} label="Date">{movement.date}</:col>
         <:action :let={{_id, movement}}>
           <div class="sr-only">
-            <.link navigate={~p"/finances/movements/#{movement}"}>Show</.link>
+            <.link navigate={~p"/finances/movements/#{movement}"}>Afficher</.link>
           </div>
-          <.link navigate={~p"/finances/movements/#{movement}/edit"}>Edit</.link>
+          <.link navigate={~p"/finances/movements/#{movement}/edit"}>Modifier</.link>
         </:action>
         <:action :let={{id, movement}}>
           <.link

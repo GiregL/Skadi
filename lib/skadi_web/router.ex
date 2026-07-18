@@ -77,7 +77,7 @@ defmodule SkadiWeb.Router do
     pipe_through [:browser]
 
     live_session :finances_user,
-      on_mount: [{SkadiWeb.UserAuth, :mount_current_scope}] do
+      on_mount: [{SkadiWeb.UserAuth, :require_authenticated}, {SkadiWeb.UserAuth, :mount_current_scope}] do
 
       live "/movements", MovementLive.Index, :index
       live "/movements/new", MovementLive.Form, :new
