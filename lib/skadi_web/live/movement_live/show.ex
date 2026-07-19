@@ -1,6 +1,8 @@
 defmodule SkadiWeb.MovementLive.Show do
   use SkadiWeb, :live_view
 
+  import SkadiWeb.FinanceComponents
+
   alias Skadi.Finances
 
   @impl true
@@ -21,12 +23,14 @@ defmodule SkadiWeb.MovementLive.Show do
       </.header>
 
       <.list>
-        <:item title="Direction">{@movement.direction}</:item>
+        <:item title="Direction">
+          <.direction_badge value={@movement.direction}/>
+        </:item>
         <:item title="Source">{@movement.source}</:item>
         <:item title="Destination">{@movement.destination}</:item>
         <:item title="Montant"><.currency_amount value={@movement.amount}/></:item>
         <:item title="Notes">{@movement.notes}</:item>
-        <:item title="Date">{@movement.date}</:item>
+        <:item title="Date"><.show_date value={@movement.date}/></:item>
       </.list>
     </Layouts.app>
     """

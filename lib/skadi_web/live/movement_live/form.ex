@@ -18,7 +18,7 @@ defmodule SkadiWeb.MovementLive.Form do
           field={@form[:direction]}
           type="select"
           label="Direction"
-          prompt="Choose a value"
+          prompt="- Choose a value -"
           options={Ecto.Enum.values(Skadi.Finances.Movement, :direction)}
         />
         <.input field={@form[:source]} type="text" label="Source" />
@@ -56,7 +56,12 @@ defmodule SkadiWeb.MovementLive.Form do
   end
 
   defp apply_action(socket, :new, _params) do
-    movement = %Movement{user_id: socket.assigns.current_scope.user.id}
+    movement = %Movement{
+      user_id: socket.assigns.current_scope.user.id,
+      date: Date.utc_today(),
+      amount: 0,
+      direction: :expense
+    }
 
     socket
     |> assign(:page_title, "New Movement")

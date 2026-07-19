@@ -9,3 +9,9 @@ msgstr "Enregistrer"
 
 msgid "Saving"
 msgstr "Sauvegarde ..."
+
+msgid "income"
+msgstr "Entrée"
+
+msgid "expense"
+msgstr "Dépense"

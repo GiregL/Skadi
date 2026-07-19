@@ -1,6 +1,8 @@
 defmodule SkadiWeb.MovementLive.Index do
   use SkadiWeb, :live_view
 
+  import SkadiWeb.FinanceComponents
+
   alias Skadi.Finances
 
   @impl true
@@ -21,11 +23,15 @@ defmodule SkadiWeb.MovementLive.Index do
         rows={@streams.movements}
         row_click={fn {_id, movement} -> JS.navigate(~p"/finances/movements/#{movement}") end}
       >
-        <:col :let={{_id, movement}} label="Direction">{movement.direction}</:col>
+        <:col :let={{_id, movement}} label="Direction">
+          <.direction_badge value={movement.direction}/>
+        </:col>
         <:col :let={{_id, movement}} label="Source">{movement.source}</:col>
         <:col :let={{_id, movement}} label="Destination">{movement.destination}</:col>
         <:col :let={{_id, movement}} label="Montant"><.currency_amount value={movement.amount}/></:col>
-        <:col :let={{_id, movement}} label="Date">{movement.date}</:col>
+        <:col :let={{_id, movement}} label="Date">
+          <.show_date value={movement.date}/>
+        </:col>
         <:action :let={{_id, movement}}>
           <div class="sr-only">
             <.link navigate={~p"/finances/movements/#{movement}"}>Afficher</.link>
@@ -37,7 +43,7 @@ defmodule SkadiWeb.MovementLive.Index do
             phx-click={JS.push("delete", value: %{id: movement.id}) |> hide("##{id}")}
             data-confirm="Are you sure?"
           >
-            Delete
+            Supprimer
           </.link>
         </:action>
       </.table>

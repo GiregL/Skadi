@@ -504,15 +504,30 @@ defmodule SkadiWeb.CoreComponents do
   end
 
   @doc """
-  Shows a given Decimal amount as a currency.
-  """
-  attr :value, Decimal
-  attr :currency, :string, default: "EUR"
-  attr :locale, :string, default: "fr"
+  Shows a given date with the long format by default, or any specified format.
 
-  def currency_amount(assigns) do
+  Available formats:
+
+  - :short => 15/03/2024
+  - :medium => 15 march 2024
+  - :long => 15 march 2024
+  - :full => friday 15 march 2024
+
+  Default locale: :fr
+
+  Available locales:
+
+  - :fr
+  - :en
+  """
+
+  attr :value, Date
+  attr :locale, :atom, default: :fr
+  attr :format, :atom, default: :long
+
+  def show_date(assigns) do
     ~H"""
-    {Skadi.Cldr.Number.to_string!(@value, format: :currency, currency: @currency, locale: @locale)}
+      {Skadi.Cldr.Date.to_string!(@value, locale: @locale, format: @format)}
     """
   end
 end

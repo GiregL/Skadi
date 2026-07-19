@@ -9,7 +9,7 @@ defmodule Skadi.Cldr do
     otp_app: :skadi,
     precompile_number_formats: ["¤¤#,##0.##"],
     precompile_transliterations: [{:latn, :arab}, {:thai, :latn}],
-    providers: [Cldr.Number],
+    providers: [Cldr.Number, Cldr.DateTime, Cldr.Calendar],
     generate_docs: true,
     force_locale_download: false
 

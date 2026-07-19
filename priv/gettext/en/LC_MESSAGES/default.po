@@ -3,3 +3,9 @@ msgstr "Username"
 
 msgid "Email"
 msgstr "Email adress"
+
+msgid "income"
+msgstr "Income"
+
+msgid "expense"
+msgstr "Expense"
