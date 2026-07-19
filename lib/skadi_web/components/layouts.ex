@@ -40,7 +40,7 @@ defmodule SkadiWeb.Layouts do
       <aside class="w-64 bg-base-200 p-4 border-r border-base-300 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between w-fit gap-2 text-xl font-bold mb-6">
-            <img src={~p"/images/logo.svg"} width="36" />
+            <img src={~p"/images/Skadi.svg"} width="36" />
             Skadi
           </div>
 
