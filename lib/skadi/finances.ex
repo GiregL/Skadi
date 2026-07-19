@@ -41,7 +41,10 @@ defmodule Skadi.Finances do
 
   """
   def list_movements(%Scope{} = scope) do
-    Repo.all_by(Movement, user_id: scope.user.id)
+    from(Movement)
+    |> where([m], m.user_id == ^scope.user.id)
+    |> order_by([m], desc: m.date)
+    |> Repo.all()
   end
 
   @doc """

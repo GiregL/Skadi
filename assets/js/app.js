@@ -24,12 +24,76 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import {hooks as colocatedHooks} from "phoenix-colocated/skadi"
 import topbar from "../vendor/topbar"
+import Chart from "chart.js/auto"
+import "chartjs-adapter-luxon"
+
+let Hooks = {}
+
+/**
+ * Finance movement chart, used by the finance/movements/ dashboard.
+ */
+
+Hooks.FinanceMovementChart = {
+  mounted() {
+    if (this.el.tagName !== "CANVAS") {
+      console.error("FinanceMovementChart hook must be mounted on a <canvas> element.")
+      return
+    }
+
+    const ctx = this.el.getContext("2d")
+    const labels = this.el.dataset.labels
+      ? JSON.parse(this.el.dataset.labels)
+      : []
+      
+    const data = this.el.dataset.data
+      ? JSON.parse(this.el.dataset.data)
+      : []
+
+    this.chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Montants",
+          data: data,
+          borderColor: "#3b82f6",
+          backgroundColor: "rgba(59,130,246,0.2)",
+          tension: 0.3
+        }]
+      },
+
+      options: {
+        scales: {
+          x: {
+            type: "time",
+            time: {
+              unit: "day"
+            }
+          },
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    })
+
+    this.handleEvent("update_chart", ({labels, data}) => {
+      this.chart.data.labels = labels
+      this.chart.data.datasets[0].data = data
+      this.chart.update()
+    })
+  }
+}
+
+/*
+  Live Socket configuration
+*/
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks},
+  hooks: {...colocatedHooks, ...Hooks},
 })
 
 // Show progress bar on live navigation and form submits
@@ -80,4 +144,3 @@ if (process.env.NODE_ENV === "development") {
     window.liveReloader = reloader
   })
 }
-

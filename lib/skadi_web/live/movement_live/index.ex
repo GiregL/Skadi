@@ -2,6 +2,7 @@ defmodule SkadiWeb.MovementLive.Index do
   use SkadiWeb, :live_view
 
   import SkadiWeb.FinanceComponents
+  alias SkadiWeb.Components.Finance.MovementChartComponent
 
   alias Skadi.Finances
 
@@ -17,6 +18,13 @@ defmodule SkadiWeb.MovementLive.Index do
           </.button>
         </:actions>
       </.header>
+
+      <.live_component
+        module={MovementChartComponent}
+        id="movements"
+        labels={@movements_labels}
+        data={@movements_data}
+      />
 
       <.table
         id="movements"
@@ -57,10 +65,24 @@ defmodule SkadiWeb.MovementLive.Index do
       Finances.subscribe_movements(socket.assigns.current_scope)
     end
 
+    movement_list = list_movements(socket.assigns.current_scope)
+
+    movement_labels =
+      movement_list
+      |> Stream.filter(fn m -> m.direction == :expense end)
+      |> Stream.map(&(&1.date))
+      |> Enum.map(&to_string/1)
+    movement_data =
+      movement_list
+      |> Stream.filter(fn m -> m.direction == :expense end)
+      |> Enum.map(&(&1.amount))
+
     {:ok,
      socket
      |> assign(:page_title, "Listing Movements")
-     |> stream(:movements, list_movements(socket.assigns.current_scope))}
+     |> assign(:movements_labels, movement_labels)
+     |> assign(:movements_data, movement_data)
+     |> stream(:movements, movement_list)}
   end
 
   @impl true
