@@ -47,18 +47,44 @@ defmodule SkadiWeb.Layouts do
           <ul class="menu w-full">
             <li>
               <.link href={~p"/"} class="flex items-center gap-3">
-                  <.icon name="hero-home" class="w-5 h-5"/>
-                  Accueil
+                  <.icon name="hero-home" class="w-5 h-5"/>Accueil
               </.link>
             </li>
 
             <%= if @current_scope do %>
 
               <li>
-                <.link href={~p"/finances/movements"} class="flex items-center gap-3">
-                  <.icon name="hero-arrows-right-left" class="w-5 h-5"/>
-                  Mouvements
+                <.link href={~p"/dashboard"} class="flex items-center gap-3">
+                  <.icon name="hero-fire" class="w-5 h-5"/>Tableau de bord
                 </.link>
+              </li>
+
+              <li>
+                <details close>
+                  <summary><.icon name="hero-banknotes" class="w-5 h-5"/>Finances</summary>
+                  <ul>
+                    <li>
+                      <.link href={~p"/finances/movements"} class="flex items-center gap-3">
+                        <.icon name="hero-arrows-right-left" class="w-5 h-5"/>
+                        Movements
+                      </.link>
+                    </li>
+                  </ul>
+                </details>
+              </li>
+
+              <li>
+                <details close>
+                  <summary><.icon name="hero-archive-box" class="w-5 h-5"/> Inventaire</summary>
+                  <ul>
+                    <li>
+                      <.link href={~p"/inventory/services"} class="flex items-center gap-3">
+                        <.icon name="hero-arrows-right-left" class="w-5 h-5"/>
+                        Services
+                      </.link>
+                    </li>
+                  </ul>
+                </details>
               </li>
 
             <% end %>

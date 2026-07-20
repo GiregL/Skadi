@@ -73,6 +73,16 @@ defmodule SkadiWeb.Router do
     delete "/users/log-out", UserSessionController, :delete
   end
 
+  scope "/dashboard", SkadiWeb do
+    pipe_through [:browser]
+
+    live_session :dashboard_user,
+      on_mount: [{SkadiWeb.UserAuth, :require_authenticated}, {SkadiWeb.UserAuth, :mount_current_scope}] do
+
+      live "/", DashboardLive.Dashboard
+    end
+  end
+
   scope "/finances", SkadiWeb do
     pipe_through [:browser]
 
@@ -83,6 +93,20 @@ defmodule SkadiWeb.Router do
       live "/movements/new", MovementLive.Form, :new
       live "/movements/:id", MovementLive.Show, :show
       live "/movements/:id/edit", MovementLive.Form, :edit
+    end
+  end
+
+  scope "/inventory", SkadiWeb do
+    pipe_through [:browser]
+
+    live_session :inventory_user,
+      on_mount: [{SkadiWeb.UserAuth, :require_authenticated}, {SkadiWeb.UserAuth, :mount_current_scope}] do
+
+      # Services
+      live "/services", ServiceLive.Index, :index
+      live "/services/new", ServiceLive.Form, :new
+      live "/services/:id", ServiceLive.Show, :show
+      live "/services/:id/edit", ServiceLive.Form, :edit
     end
   end
 end
