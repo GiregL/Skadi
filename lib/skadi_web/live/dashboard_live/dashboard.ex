@@ -1,6 +1,8 @@
 defmodule SkadiWeb.DashboardLive.Dashboard do
   use SkadiWeb, :live_view
 
+  import SkadiWeb.DashboardLive.Components
+
   @moduledoc """
   Personal dashboard.
 
@@ -21,6 +23,8 @@ defmodule SkadiWeb.DashboardLive.Dashboard do
       <.header>
         Tableau de bord
       </.header>
+
+      <.quick_links/>
     </Layouts.app>
     """
   end
